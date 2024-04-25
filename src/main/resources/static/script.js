@@ -1,7 +1,3 @@
-
-// Funksjon for å vise billetene
-let billetter = []; // Tomt array til å lagre billetene i
-
 // Funksjon for å validere filmvalg
 function validerFilm(film) {
     return film !== '';
@@ -29,7 +25,6 @@ function validerEpost(epost) {
     return epostRegex.test(epost);
 }
 
-
 const valideringsmeldinger = {
     film: 'Vennligst velg en film.',
     antall: 'Vennligst skriv inn et gyldig antall (minst 1).',
@@ -51,19 +46,37 @@ function kjop_Billet() {
 
     // Sjekker om feltene er gyldige før du oppretter en billett
     if (validerFilm(film) && validerAntall(antall) && validerNavn(fornavn) && validerNavn(etternavn) && validerTelefon(tlf) && validerEpost(epost)) {
-        // Oppretter objekt med de innsamlede verdiene
-        const billett = {
-            film: film,
-            antall: antall,
-            fornavn: fornavn,
-            etternavn: etternavn,
-            tlf: tlf,
-            epost: epost
-        };
+        // Sender dataene til serveren ved hjelp av en HTTP POST-anmodning
+        fetch('http://localhost:8080/lagre', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                film: film,
+                antall: antall,
+                fornavn: fornavn,
+                etternavn: etternavn,
+                tlf: tlf,
+                epost: epost
+            })
+        })
+            .then(response => {
+                if (response.ok) {
+                    // Gjør noe hvis lagringen var vellykket
+                    // For eksempel, oppdaterer grensesnittet for å vise en bekreftelsesmelding
+                    console.log('Billett lagret vellykket!');
+                } else {
+                    // Håndter feil her, for eksempel vise en feilmelding til brukeren
+                    console.error('Feil ved lagring av billett:', response.statusText);
+                }
+            })
+            .catch(error => {
+                // Håndter nettverksfeil her
+                console.error('Nettverksfeil:', error);
+            });
 
-        // Legger objektet til i billetter-arrayet
-        billetter.push(billett);
-        visBilletter();
+        // Tilbakestill inputfeltene
         resetInputFields();
     } else {
         // Viser feilmeldinger ved siden av inputboksene
@@ -71,7 +84,7 @@ function kjop_Billet() {
     }
 }
 
-
+// Funksjon for å vise valideringsmeldinger
 function visValideringsmeldinger() {
     const valideringsfunksjoner = {
         film: validerFilm,
@@ -96,48 +109,29 @@ function visValideringsmeldinger() {
 
 // Funksjon for å vise billetene
 function visBilletter() {
-    // Henter referanser til HTML-elementene som skal oppdateres
+    // Henter referanse til HTML-elementet som skal vise billettene
     const billettliste = document.getElementById('billettliste');
 
-
-    // Tømmer innholdet i listene
+    // Tømmer innholdet i billettlisten
     billettliste.innerHTML = '';
 
-
-    // Oppdaterer nye liste-elementer for hver billett
+    // Oppdaterer listen med nye billett-elementer
     billetter.forEach((billett, index) => {
+        // Opprett et nytt li-element for hver billett
         const listItem = document.createElement('li');
-        listItem.textContent = `Billett ${index + 1}: Film: ${billett.film}, Antall: ${billett.antall}, Navn: ${billett.fornavn} ${billett.etternavn}, Telefon: ${billett.tlf}, E-post: ${billett.epost}`;
-        billettliste.appendChild(listItem);
 
+        // Legg til tekstinnholdet med billettdetaljer
+        listItem.textContent = `Billett ${index + 1}: Film: ${billett.film}, Antall: ${billett.antall}, Navn: ${billett.fornavn} ${billett.etternavn}, Telefon: ${billett.tlf}, E-post: ${billett.epost}`;
+
+        // Legg til det nye li-elementet til billettlisten
+        billettliste.appendChild(listItem);
     });
 }
 
-// Funksjon for å slette alle billettene
-function slettBilleter() {
-    // Tømmer arrayet og oppdaterer visningen
-    billetter = [];
-    visBilletter();
-}
 
 // Funksjon som tilbakestiller inputfeltene
 function resetInputFields() {
-    document.getElementById('antall').value = '';
-    document.getElementById('fornavn').value = '';
-    document.getElementById('etternavn').value = '';
-    document.getElementById('tlf').value = '';
-    document.getElementById('epost').value = '';
-}
-
-// Funksjon for å slette alle billettene
-function slettBilleter() {
-    // Tømmer arrayet og oppdaterer visningen
-    billetter = [];
-    visBilletter();
-}
-
-// Funksjon som tilbakestiller inputfeltene
-function resetInputFields() {
+    document.getElementById('film').value = '';
     document.getElementById('antall').value = '';
     document.getElementById('fornavn').value = '';
     document.getElementById('etternavn').value = '';

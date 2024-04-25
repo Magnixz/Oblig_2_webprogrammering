@@ -3,6 +3,7 @@ package com.example.oblig_3_final_file;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -14,8 +15,9 @@ public class BillettKontroller {
     @Autowired
     private BillettRepository rep;
 
+
     @PostMapping("/lagre")
-    public void lagreBillett(Billett innBillett){
+    public void lagreBillett(@RequestBody Billett innBillett){
         rep.lagreBillet(innBillett);
     }
 

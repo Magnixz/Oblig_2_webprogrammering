@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bestilling av Kinobilleter</title>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="container">
+<h1 class="mt-5">Bestilling av kinobilleter</h1>
+
+<div class="form-group mt-4">
+    <label for="film">Velg film:</label>
+    <select id="film" class="form-control" required>
+        <option value="">Velg en film</option>
+        <option value="Krim">Krim</option>
+        <option value="Komedie">Komedie</option>
+        <option value="Drama">Drama</option>
+    </select>
+    <span id="film-feilmelding" class="feilmelding"></span>
+</div>
+
+<div class="form-group">
+    <label for="antall">Antall Billetter:</label>
+    <input type="number" id="antall" class="form-control" min="1" required>
+    <span id="antall-feilmelding" class="feilmelding"></span>
+</div>
+
+<div class="form-group">
+    <label for="fornavn">Fornavn:</label>
+    <input type="text" id="fornavn" class="form-control" required>
+    <span id="fornavn-feilmelding" class="feilmelding"></span>
+</div>
+
+<div class="form-group">
+    <label for="etternavn">Etternavn:</label>
+    <input type="text" id="etternavn" class="form-control" required>
+    <span id="etternavn-feilmelding" class="feilmelding"></span>
+</div>
+
+<div class="form-group">
+    <label for="tlf">Telefonnr:</label>
+    <input type="tel" id="tlf" class="form-control" pattern="[0-9]{8}" required>
+    <span id="tlf-feilmelding" class="feilmelding"></span>
+</div>
+
+<div class="form-group">
+    <label for="epost">E-post:</label>
+    <input type="email" id="epost" class="form-control" required>
+    <span id="epost-feilmelding" class="feilmelding"></span>
+</div>
+
+<button onclick="kjop_Billet()" class="btn btn-primary">Kjøp Billett</button>
+
+<h2 class="mt-5">Alle Billetter</h2>
+<ul id="billettliste" class="list-group"></ul>
+<ul id="tekstListe" class="list-group"></ul>
+
+<button onclick="slettBilleter()" class="btn btn-danger mt-3">Slett alle billetter</button>
+
+</body>
+</html>
